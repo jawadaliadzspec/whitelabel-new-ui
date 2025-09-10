@@ -16,27 +16,27 @@ export default defineNuxtConfig({
       appName: process.env.APP_NAME || 'Veckans R',
     }
   },
-  nitro: {
-    preset: 'node-server',
-    externals: {
-      // Don’t bundle Prisma – resolve at runtime
-      external: ['@prisma/client', 'prisma', '.prisma/client']
-    },
-    moduleSideEffects: ['@prisma/client'],
-    // Hard stop Rollup from touching ".prisma/*" (Windows fix)
-    rollupConfig: {
-      plugins: [
-        {
-          name: 'externalize-dot-prisma',
-          resolveId(source: string) {
-            if (source === '.prisma' || source.startsWith('.prisma/')) {
-              // Mark as external so Rollup won’t try to resolve/package it
-              return { id: source, external: true }
-            }
-            return null
-          }
-        }
-      ]
-    }
-  }
+  // nitro: {
+  //   preset: 'node-server',
+  //   externals: {
+  //     // Don’t bundle Prisma – resolve at runtime
+  //     external: ['@prisma/client', 'prisma', '.prisma/client']
+  //   },
+  //   moduleSideEffects: ['@prisma/client'],
+  //   // Hard stop Rollup from touching ".prisma/*" (Windows fix)
+  //   rollupConfig: {
+  //     plugins: [
+  //       {
+  //         name: 'externalize-dot-prisma',
+  //         resolveId(source: string) {
+  //           if (source === '.prisma' || source.startsWith('.prisma/')) {
+  //             // Mark as external so Rollup won’t try to resolve/package it
+  //             return { id: source, external: true }
+  //           }
+  //           return null
+  //         }
+  //       }
+  //     ]
+  //   }
+  // }
 })
