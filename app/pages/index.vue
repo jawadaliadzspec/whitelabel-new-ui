@@ -20,7 +20,8 @@ const componentMap = {
 const selectedComponent = shallowRef(null) // no component yet
 const homeSettings = ref({})
 onMounted(async () => {
-  const settings = await $fetch('/api/settings')
+  const settings=useFetch('/api/settings')
+  // const settings = await $fetch('/api/settings')
   homeSettings.value = settings
   const homepageKey = settings?.homePage ?? 'homeOne'
 
