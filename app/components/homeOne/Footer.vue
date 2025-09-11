@@ -4,7 +4,7 @@
       <!-- Logo + Tagline -->
       <div class="md:w-1/4 flex flex-col items-center md:items-start text-center md:text-left mb-8 md:mb-0">
         <span class="text-[#d63384] font-bold text-3xl mb-2" style="font-family: 'Pacifico', cursive;">
-          Veckans R
+          <img width="250px" :src="logo" :alt="appName" />
         </span>
         <span class="text-gray-500 text-lg">All discounts in one place!</span>
       </div>
@@ -76,7 +76,11 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
+
+const props = defineProps<{
+  logo: ''
+}>()
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" })
 }
