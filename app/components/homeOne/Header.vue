@@ -106,7 +106,7 @@ const navLinks = [
 ];
 
 onMounted(async () => {
-  const settings:any = await useFetch("/api/settings");
+  const settings:any = await $fetch("/api/settings");
 
   logo.value = settings?.logo;
   primaryColor.value = settings?.colors?.primaryColor || '#d63384';
