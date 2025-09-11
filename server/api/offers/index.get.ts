@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
         ? query.stores.split(',').map((id:number) => Number(id)).filter(Boolean)
         : []
 
-    const companyId = process.env.COMPANY_ID ?? 1
+    const config = useRuntimeConfig();
+    const companyId =config.companyId;
     if (!companyId) {
         return {
             error: true,

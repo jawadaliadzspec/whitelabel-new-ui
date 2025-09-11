@@ -8,7 +8,8 @@ function serializeBigInt(obj:any) {
 
 export default defineEventHandler(async (event) => {
     try {
-        const companyId = 1
+        const config = useRuntimeConfig();
+        const companyId =config.companyId;
         if (!companyId) {
             return {
                 error: true,
