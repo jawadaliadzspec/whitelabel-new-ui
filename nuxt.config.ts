@@ -14,7 +14,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appName: process.env.APP_NAME || 'Veckans R',
-    }
+    },
+    companyId: process.env.COMPANY_ID,
   },
   // nitro: {
   //   preset: 'node-server',
