@@ -5,7 +5,7 @@
       Popular Discounts
     </h1>
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      No offers available at the moment.
+      {{ data.mainHeading || 'No offers available at the moment.'}}
     </div>
 
     <!-- Card Grid -->
@@ -38,7 +38,7 @@
               :to="`/offers/${offer.path}`"
               class="bg-[#d63384] px-5 py-2 mt-6 text-white rounded-lg font-semibold hover:text-[#d63384] hover:bg-white hover:outline hover:outline-1 hover:outline-[#d63384] transition duration-700"
           >
-            Discover More
+            {{data.buttonText || 'Discover More'}}
           </NuxtLink>
         </div>
       </div>
@@ -46,9 +46,15 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue"
 const offers = ref([])
+defineProps<{
+  data: {
+    mainHeading: string;
+    buttonText: string;
+  }
+}>()
 onMounted(async () => {
   try {
     offers.value = await $fetch('/api/offers/popular')
