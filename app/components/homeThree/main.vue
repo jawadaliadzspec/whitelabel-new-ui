@@ -1,7 +1,7 @@
 <template>
   <hero-section :data="heroData" :colors="settings.colors" :slider="slider"/>
-  <exclusive-section/>
-  <PopularCategories/>
+  <exclusive-section :data="exclusiveData"/>
+  <PopularCategories :data="popularData"/>
   <banner-section :data="bannerData"/>
   <Faq :data="faqData"/>
 
@@ -34,7 +34,14 @@ const bannerData = props.settings?.homeThree?.bannerSection ?? {
   image: '',
 };
 
-
+const exclusiveData = props.settings?.homeThree?.exclusiveSection ?? {
+  mainHeading: '',
+  buttonText: '',
+};
+const popularData = props.settings?.homeThree?.popularSection ?? {
+  mainHeading: '',
+  buttonText: '',
+};
 const faqData = props.settings?.homeThree?.faqSection ?? {
   title: 'FAQ',
   items: []

@@ -6,7 +6,7 @@
 
     <!-- Show message if no offers -->
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      No offers available at the moment.
+      {{ data.mainHeading || 'No offers available at the moment.'}}
     </div>
 
     <!-- Show grid if offers exist -->
@@ -63,10 +63,16 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
 const offers = ref([])
+defineProps<{
+  data: {
+    mainHeading: string;
+    buttonText: string;
+  }
+}>()
 
 onMounted(async () => {
   try {

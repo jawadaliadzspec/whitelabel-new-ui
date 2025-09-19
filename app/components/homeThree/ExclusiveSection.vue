@@ -4,7 +4,8 @@
       Exclusive Coupons
     </h1>
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      No offers available at the moment.
+      {{ data.mainHeading || 'No offers available at the moment.'}}
+
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-16 max-w-7xl mx-auto">
@@ -57,10 +58,17 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
 const offers = ref([])
+defineProps<{
+  data: {
+    mainHeading: string;
+    secondHeading: string;
+
+  }
+}>()
 
 onMounted(async () => {
   try {
