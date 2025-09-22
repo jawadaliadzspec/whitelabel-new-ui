@@ -2,10 +2,10 @@
   <section class="bg-white py-10 px-4 sm:px-6 lg:px-24">
     <!-- Heading -->
     <h1 class="font-bold text-3xl sm:text-4xl text-left mb-10">
-      Popular Discounts
+      {{ data.mainHeading || 'Popular Discounts'}}
     </h1>
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      {{ data.mainHeading || 'No offers available at the moment.'}}
+      No offers available at the moment.
     </div>
 
     <!-- Card Grid -->

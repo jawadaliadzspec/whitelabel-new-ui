@@ -11,7 +11,7 @@
             :key="faq.question"
             class="rounded-3xl p-6 shadow-md border border-gray-300"
         >
-          <h3 class="font-semibold text-lg mb-2"> {{ faq.question }}</h3>npm run
+          <h3 class="font-semibold text-lg mb-2"> {{ faq.question }}</h3>
           <p class="text-gray-600 text-sm leading-relaxed">
             {{ faq.answer }}
           </p>

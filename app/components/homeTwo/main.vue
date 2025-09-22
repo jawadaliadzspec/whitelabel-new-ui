@@ -1,7 +1,7 @@
 <template>
   <HeroSection :data="heroData" :colors="settings.colors"/>
   <ExclusiveSection :data="exclusiveData"/>
-  <PopularSection/>
+  <PopularSection :data="popularData"/>
   <BannerSection :data="bannerData"/>
   <PopularCategories/>
   <faq :data="faqData"/>

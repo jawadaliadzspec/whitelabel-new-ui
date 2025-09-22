@@ -2,10 +2,10 @@
   <section class="bg-gray-50 py-10 px-4">
     <div class="max-w-6xl mx-auto">
       <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-        Exclusive offers 🔥
+        {{data.mainHeading || 'Exclusive offers 🔥'}}
       </h2>
       <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-        {{ data.mainHeading || 'No offers available at the moment.'}}
+        No offers available at the moment.
       </div>
       <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -34,9 +34,13 @@
           <div class="p-4 text-center pt-10">
             <p class="text-lg font-bold text-gray-800">{{ offer.title}}</p>
           </div>
-          <div class="bg-pink-600 text-white text-xs font-bold text-center py-2 uppercase">
-            Campaign
-          </div>
+          <NuxtLink
+              :to="`/offers/${offer.path}`"
+          >
+            <div class="bg-pink-600 text-white text-xs font-bold text-center py-2 uppercase">
+              {{data.buttonText || 'Discover More'}}
+            </div>
+          </NuxtLink>
         </div>
       </div>
     </div>

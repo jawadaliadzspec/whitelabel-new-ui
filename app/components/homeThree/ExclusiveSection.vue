@@ -1,10 +1,10 @@
 <template>
   <section class="py-20 px-6 sm:px-10 lg:px-16 bg-gray-50">
     <h1 class="font-semibold text-5xl text-gray-800 text-center mb-16">
-      Exclusive Coupons
+      {{data.mainHeading || 'Exclusive Coupons'}}
     </h1>
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      {{ data.mainHeading || 'No offers available at the moment.'}}
+      No offers available at the moment.
 
     </div>
 
@@ -50,7 +50,7 @@
               :to="`/offers/${offer.path}`"
               class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-full hover:bg-blue-700 transition text-center w-full sm:w-auto md:w-auto mx-auto md:mx-0"
           >
-            Discover More
+            {{data.buttonText || 'Discover More'}}
           </NuxtLink>
         </div>
       </div>

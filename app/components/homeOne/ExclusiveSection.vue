@@ -1,10 +1,10 @@
 <template>
   <section class="bg-white py-10 px-4 sm:px-6 lg:px-24">
     <h1 class="font-bold text-3xl sm:text-4xl text-left mb-10">
-      Exclusive Discounts
+      {{ data.mainHeading || 'Exclusive Discounts'}}
     </h1>
     <div v-if="offers.length === 0" class="text-center text-gray-500 text-lg italic">
-      {{ data.mainHeading || 'No offers available at the moment.'}}
+      No offers available at the moment.
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       <div
