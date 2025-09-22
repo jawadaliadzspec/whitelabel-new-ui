@@ -296,12 +296,12 @@ model offers {
   code           String?          @db.VarChar(255)
   start_date     DateTime?        @db.Date
   end_date       DateTime?        @db.Date
-  link           String?          @db.VarChar(255)
+  link           String?          @db.LongText
   is_featured    Boolean          @default(false)
   is_exclusive   Boolean          @default(false)
   is_deal        Boolean          @default(false)
   path           String?          @db.VarChar(255)
-  thumbnail      String?          @db.VarChar(255)
+  thumbnail      String?          @db.LongText
   sku            String?          @db.VarChar(255)
   product_name   String?          @db.VarChar(255)
   product_price  Decimal?         @db.Decimal(10, 2)

@@ -98,14 +98,12 @@ const props = withDefaults(
     }
 )
 
-// Fallback images if prop is empty
 const fallback = [
   'https://demos.wicombit.com/couponza/images/slider_1635351790.jpg',
   'https://demos.wicombit.com/couponza/images/slider_1635353238.jpg',
   'https://demos.wicombit.com/couponza/images/slider_1635352051.jpg'
 ]
 
-// Normalize to string URLs
 const imageUrls = computed<string[]>(() => {
   const src = props.slider?.length ? props.slider : fallback
   return src
@@ -147,29 +145,27 @@ function resume() {
   start()
 }
 
+const onVis = () => (document.hidden ? stop() : start())
+
 onMounted(async () => {
-  // Load categories on client; swap to useFetch if you need SSR
   try {
-    // @ts-ignore - $fetch is available in Nuxt runtime
+    // @ts-ignore - $fetch is provided by Nuxt
     categories.value = await $fetch('/api/categories/popular')
   } catch (e) {
     categories.value = []
     console.error('Failed to load categories:', e)
   }
 
-  // Autoplay handling + page visibility
   start()
-  const onVis = () => (document.hidden ? stop() : start())
   document.addEventListener('visibilitychange', onVis)
-
-  // Clean up
-  onUnmounted(() => {
-    stop()
-    document.removeEventListener('visibilitychange', onVis)
-  })
 })
 
-// Restart autoplay if the slider prop changes
+onUnmounted(() => {
+  stop()
+  document.removeEventListener('visibilitychange', onVis)
+})
+
+// Restart autoplay when slider prop changes
 watch(
     () => props.slider,
     () => {
@@ -180,3 +176,4 @@ watch(
     { deep: true }
 )
 </script>
+
