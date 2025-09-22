@@ -1,101 +1,182 @@
-<script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
+<template>
+  <div class="flex flex-col lg:flex-row justify-center py-4 lg:py-10 gap-4 lg:gap-6 px-4">
+    <!-- Sidebar -->
+    <aside
+        class="w-full lg:w-[20%] text-gray-700 font-medium border border-gray-200 shadow-lg rounded-md bg-white"
+    >
+      <div class="p-4 lg:p-6 flex flex-col gap-3">
+        <NuxtLink
+            v-for="(category, idx) in categories"
+            :key="category.id ?? idx"
+            :to="{ path: '/browse', query: { categories: category.id } }"
+            class="flex items-center justify-between hover:text-[#d63384] transition-colors"
+        >
+          <span>{{ category.name }}</span>
+          <span class="text-sm text-gray-400">
+            ({{ category._count?.offers || 0 }} offers)
+          </span>
+        </NuxtLink>
+      </div>
+    </aside>
 
-const props = defineProps({
-  autoplay: { type: Boolean, default: true },
-  intervalMs: { type: Number, default: 5000 },
-  slides: { type: Array as () => string[], default: () => [] }
+    <!-- Image Slider -->
+    <section
+        v-if="imageUrls.length"
+        class="w-full lg:w-[55%] bg-white rounded-xl shadow relative"
+    >
+      <div
+          class="relative w-full overflow-hidden rounded-xl bg-white"
+          @mouseenter="pause()"
+          @mouseleave="resume()"
+          tabindex="0"
+          @keydown.left.prevent="prevSlide"
+          @keydown.right.prevent="nextSlide"
+          aria-label="Promotional image slider"
+      >
+        <img
+            :src="imageUrls[currentSlide]"
+            :alt="`Slide ${currentSlide + 1} of ${imageUrls.length}`"
+            class="w-full block object-cover aspect-[25/10] transition-all duration-500"
+            loading="lazy"
+        />
+
+        <!-- Controls -->
+        <button
+            @click="prevSlide"
+            class="absolute left-2 top-1/2 -translate-y-1/2 bg-white shadow p-2 rounded-full z-10 hover:bg-gray-100"
+            aria-label="Previous slide"
+        >
+          ◀
+        </button>
+        <button
+            @click="nextSlide"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-white shadow p-2 rounded-full z-10 hover:bg-gray-100"
+            aria-label="Next slide"
+        >
+          ▶
+        </button>
+
+        <!-- Dots -->
+        <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
+          <button
+              v-for="(u, i) in imageUrls"
+              :key="`dot-${i}`"
+              @click="goTo(i)"
+              class="h-2 w-2 rounded-full"
+              :class="i === currentSlide ? 'bg-gray-800' : 'bg-gray-300'"
+              aria-label="Go to slide"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Optional: empty state if no images -->
+    <section
+        v-else
+        class="w-full lg:w-[55%] bg-white rounded-xl shadow p-6 text-center text-gray-500"
+    >
+      No slides to show.
+    </section>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+
+const categories = ref<any[]>([])
+
+const props = withDefaults(
+    defineProps<{
+      slider?: Array<{ url: string } | string>
+      autoplay?: boolean
+      intervalMs?: number
+    }>(),
+    {
+      slider: () => [],
+      autoplay: true,
+      intervalMs: 5000,
+    }
+)
+
+// Fallback images if prop is empty
+const fallback = [
+  'https://demos.wicombit.com/couponza/images/slider_1635351790.jpg',
+  'https://demos.wicombit.com/couponza/images/slider_1635353238.jpg',
+  'https://demos.wicombit.com/couponza/images/slider_1635352051.jpg'
+]
+
+// Normalize to string URLs
+const imageUrls = computed<string[]>(() => {
+  const src = props.slider?.length ? props.slider : fallback
+  return src
+      .map((s: any) => (typeof s === 'string' ? s : s?.url))
+      .filter(Boolean)
 })
 
 const currentSlide = ref(0)
 let timer: number | null = null
 
 function nextSlide() {
-  if (!props.slides.length) return
-  currentSlide.value = (currentSlide.value + 1) % props.slides.length
+  if (!imageUrls.value.length) return
+  currentSlide.value = (currentSlide.value + 1) % imageUrls.value.length
 }
-
 function prevSlide() {
-  if (!props.slides.length) return
+  if (!imageUrls.value.length) return
   currentSlide.value =
-      (currentSlide.value - 1 + props.slides.length) % props.slides.length
+      (currentSlide.value - 1 + imageUrls.value.length) % imageUrls.value.length
+}
+function goTo(i: number) {
+  if (!imageUrls.value.length) return
+  currentSlide.value = (i + imageUrls.value.length) % imageUrls.value.length
 }
 
 function start() {
-  if (!props.autoplay || timer) return
+  if (!props.autoplay || timer || imageUrls.value.length <= 1) return
   timer = window.setInterval(nextSlide, props.intervalMs)
 }
-
 function stop() {
   if (timer) {
-    clearInterval(timer)
+    window.clearInterval(timer)
     timer = null
   }
 }
-
-// start autoplay when mounted
-onMounted(() => {
-  start()
-})
-
-// stop autoplay when unmounted
-onUnmounted(() => {
+function pause() {
   stop()
+}
+function resume() {
+  start()
+}
+
+onMounted(async () => {
+  // Load categories on client; swap to useFetch if you need SSR
+  try {
+    // @ts-ignore - $fetch is available in Nuxt runtime
+    categories.value = await $fetch('/api/categories/popular')
+  } catch (e) {
+    categories.value = []
+    console.error('Failed to load categories:', e)
+  }
+
+  // Autoplay handling + page visibility
+  start()
+  const onVis = () => (document.hidden ? stop() : start())
+  document.addEventListener('visibilitychange', onVis)
+
+  // Clean up
+  onUnmounted(() => {
+    stop()
+    document.removeEventListener('visibilitychange', onVis)
+  })
 })
 
-// handle tab visibility
-useEventListener(document, 'visibilitychange', () => {
-  document.hidden ? stop() : start()
-})
+// Restart autoplay if the slider prop changes
+watch(
+    () => props.slider,
+    () => {
+      stop()
+      currentSlide.value = 0
+      start()
+    },
+    { deep: true }
+)
 </script>
-
-<template>
-  <section class="relative w-full overflow-hidden">
-    <!-- Slides -->
-    <div class="relative h-64 w-full">
-      <div
-          v-for="(slide, index) in props.slides"
-          :key="index"
-          class="absolute inset-0 flex items-center justify-center transition-opacity duration-700"
-          :class="{ 'opacity-100': currentSlide === index, 'opacity-0': currentSlide !== index }"
-      >
-        <img :src="slide" class="h-full w-full object-cover" />
-      </div>
-    </div>
-
-    <!-- Controls -->
-    <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2">
-      <button
-          v-for="(slide, index) in props.slides"
-          :key="'dot-' + index"
-          class="h-3 w-3 rounded-full"
-          :class="currentSlide === index ? 'bg-white' : 'bg-gray-400'"
-          @click="currentSlide = index"
-      ></button>
-    </div>
-
-    <button
-        class="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-black/50 p-2 text-white"
-        @click="prevSlide"
-    >
-      ‹
-    </button>
-    <button
-        class="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-black/50 p-2 text-white"
-        @click="nextSlide"
-    >
-      ›
-    </button>
-  </section>
-</template>
-
-<style scoped>
-/* optional: smoother fade between slides */
-.opacity-0 {
-  opacity: 0;
-  pointer-events: none;
-}
-.opacity-100 {
-  opacity: 1;
-}
-</style>
