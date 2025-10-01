@@ -1,5 +1,5 @@
 <template>
-  <footer class="relative bg-[#f5f3fc] pt-8 pb-4" logo="">
+  <footer class="relative bg-[#f5f3fc] pt-8 pb-4">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between gap-8 px-4 md:px-8">
       <!-- Logo + Tagline -->
       <div class="md:w-1/4 flex flex-col items-center md:items-start text-center md:text-left mb-8 md:mb-0">
@@ -11,32 +11,30 @@
 
       <!-- Useful Links -->
       <div class="flex-1 flex flex-col sm:flex-row justify-between gap-10">
-        <!-- Användbara länkar -->
+        <!-- Useful Links -->
         <div>
-          <h4 class="font-bold text-lg mb-2">{{footer.usefulLinks.mainHeading || 'Useful Links'}}</h4>
+          <h4 class="font-bold text-lg mb-2">{{ safeFooter.usefulLinks.mainHeading }}</h4>
           <ul class="space-y-2 text-gray-700">
-            <li><NuxtLink to="/browse" class="hover:text-[#d63384] transition">{{footer.usefulLinks.discounts.text || 'Discounts'}}</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.usefulLinks.categories.text || 'Categories'}}</NuxtLink></li>
-            <li><NuxtLink to="/contact" class="hover:text-[#d63384] transition">{{footer.usefulLinks.contact.text || 'Contact'}}</NuxtLink></li>
-<!--            <li><NuxtLink to="/login" class="hover:text-[#d63384] transition">Logga in</NuxtLink></li>-->
+            <li><NuxtLink to="/browse" class="hover:text-[#d63384] transition">{{ safeFooter.usefulLinks.discounts.text }}</NuxtLink></li>
+            <li><NuxtLink to="/categories" class="hover:text-[#d63384] transition">{{ safeFooter.usefulLinks.categories.text }}</NuxtLink></li>
+            <li><NuxtLink to="/contact" class="hover:text-[#d63384] transition">{{ safeFooter.usefulLinks.contact.text }}</NuxtLink></li>
           </ul>
         </div>
-        <!-- Företagslänkar -->
+
+        <!-- Business Links -->
         <div>
-          <h4 class="font-bold text-lg mb-2">{{footer.businessLinks.mainHeading || 'Business links'}}</h4>
+          <h4 class="font-bold text-lg mb-2">{{ safeFooter.businessLinks.mainHeading }}</h4>
           <ul class="space-y-2 text-gray-700">
-<!--            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Blog</NuxtLink></li>-->
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.termOfService.text || 'Terms of Service'}}</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.privacyPolicy.text || 'Privacy Policy'}}</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.cookiePolicy.text || 'Cookie Policy'}}</NuxtLink></li>
+            <li><NuxtLink to="/terms" class="hover:text-[#d63384] transition">{{ safeFooter.businessLinks.termOfService.text }}</NuxtLink></li>
+            <li><NuxtLink to="/privacy" class="hover:text-[#d63384] transition">{{ safeFooter.businessLinks.privacyPolicy.text }}</NuxtLink></li>
+            <li><NuxtLink to="/cookies" class="hover:text-[#d63384] transition">{{ safeFooter.businessLinks.cookiePolicy.text }}</NuxtLink></li>
           </ul>
         </div>
-        <!-- Nyhetsbrev -->
+
+        <!-- Newsletter -->
         <div class="sm:max-w-xs w-full">
-          <h4 class="font-bold text-lg mb-2">{{footer.newsLetter.mainHeading || 'Newsletter'}}</h4>
-          <p class="text-gray-700 text-sm mb-4">
-            {{footer.newsLetter.subHeading || 'Stay up to date with the latest news, updates and offers by subscribing to our newsletter.'}}
-          </p>
+          <h4 class="font-bold text-lg mb-2">{{ safeFooter.newsLetter.mainHeading }}</h4>
+          <p class="text-gray-700 text-sm mb-4">{{ safeFooter.newsLetter.subHeading }}</p>
           <form class="flex">
             <input
                 type="email"
@@ -61,7 +59,8 @@
       <span class="text-gray-600 text-base text-center sm:text-left w-full sm:w-auto">
         Copyright 2025. All rights reserved.
       </span>
-      <!-- Back to top button -->
+
+      <!-- Back to top -->
       <button
           @click="scrollToTop"
           class="fixed z-40 bottom-8 right-8 bg-white border-2 border-[#d63384] shadow-2xl w-14 h-14 rounded-full flex items-center justify-center transition hover:bg-[#fbeff7]"
@@ -77,12 +76,76 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
 
+// ✅ Footer types
+interface FooterLink {
+  text: string
+}
+interface FooterSection {
+  mainHeading: string
+  [key: string]: FooterLink | string
+}
+interface FooterData {
+  usefulLinks: {
+    mainHeading: string
+    discounts: FooterLink
+    categories: FooterLink
+    contact: FooterLink
+  }
+  businessLinks: {
+    mainHeading: string
+    termOfService: FooterLink
+    privacyPolicy: FooterLink
+    cookiePolicy: FooterLink
+  }
+  newsLetter: {
+    mainHeading: string
+    subHeading: string
+  }
+}
+
+// ✅ Props with optional values
 const props = defineProps<{
-  logo: '',
-  footer: object
+  logo?: string
+  footer?: Partial<FooterData>
 }>()
+
+// ✅ Defaults
+const defaultFooter: FooterData = {
+  usefulLinks: {
+    mainHeading: "Useful Links",
+    discounts: { text: "Discounts" },
+    categories: { text: "Categories" },
+    contact: { text: "Contact" },
+  },
+  businessLinks: {
+    mainHeading: "Business Links",
+    termOfService: { text: "Terms of Service" },
+    privacyPolicy: { text: "Privacy Policy" },
+    cookiePolicy: { text: "Cookie Policy" },
+  },
+  newsLetter: {
+    mainHeading: "Newsletter",
+    subHeading: "Stay up to date with the latest news, updates and offers by subscribing to our newsletter.",
+  },
+}
+
+// ✅ Merge props.footer with defaults
+const safeFooter = computed<FooterData>(() => {
+  return {
+    ...defaultFooter,
+    ...props.footer,
+    usefulLinks: { ...defaultFooter.usefulLinks, ...props.footer?.usefulLinks },
+    businessLinks: { ...defaultFooter.businessLinks, ...props.footer?.businessLinks },
+    newsLetter: { ...defaultFooter.newsLetter, ...props.footer?.newsLetter },
+  }
+})
+
+// ✅ Scroll to top
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" })
 }
+
+const logo = props.logo || "/default-logo.png"
 </script>
