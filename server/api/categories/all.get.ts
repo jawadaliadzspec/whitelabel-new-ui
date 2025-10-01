@@ -7,22 +7,38 @@ function serializeBigInt(obj:any) {
 
 export default defineEventHandler(async (event) => {
     try {
-        const categories = await prisma.categories.findMany({
-            where: {
-                status: true,
-            },
+        const config = useRuntimeConfig();
+        const companyId =config.companyId;
+        if (!companyId) {
+            return {
+                error: true,
+                message: 'COMPANY_ID is not defined in .env',
+                statusCode: 500,
+            }
+        }
+        const activeStores = await prisma.stores.findMany({
+            where: { status: 1 },
+            select: { id: true },
+        });
+        const activeStoreIds = activeStores.map(s => s.id);
+        const categoriesRaw = await prisma.categories.findMany({
+            where: { company_id: BigInt(companyId),status: true },
             select: {
                 id: true,
                 name: true,
-                // image: true,
                 _count: {
-                    select: { offers: true }
-                }
+                    select: {
+                        offers: {
+                            where: {
+                                store_id: { in: activeStoreIds },
+                            },
+                        },
+                    },
+                },
             },
-            orderBy: {
-                name: 'asc'
-            },
-        })
+            orderBy: { name: 'asc' },
+        });
+        const categories = categoriesRaw.filter(c => c._count.offers > 0);
         return serializeBigInt(categories)
     } catch (err:any) {
         return {
