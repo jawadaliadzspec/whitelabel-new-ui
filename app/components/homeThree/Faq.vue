@@ -3,7 +3,7 @@
     <div class="max-w-5xl mx-auto bg-white shadow-md rounded-2xl p-10">
       <!-- ✅ Always show FAQ title -->
       <h2 class="text-3xl sm:text-4xl font-extrabold text-center text-gray-900 mb-10">
-        {{ data.title }}{{ data.title ?? 'Frequently Asked Questions' }}
+        {{ data.title ?? 'Frequently Asked Questions' }}
       </h2>
 
       <!-- ✅ If FAQs available -->
