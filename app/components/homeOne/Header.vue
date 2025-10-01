@@ -106,24 +106,32 @@ interface HeaderItem {
 }
 
 const props = defineProps<{
-  logo: string
-  primaryColor: string
-  header: Record<string, HeaderItem | undefined>
+  logo?: string
+  primaryColor?: string
+  header?: Record<string, HeaderItem | undefined>
 }>()
+
+// ✅ Default nav items (if backend gives nothing)
+const defaultHeader: Record<string, HeaderItem> = {
+  home: { text: 'Home', link: '/' },
+  browse: { text: 'Browse', link: '/browse' },
+  categories: { text: 'Categories', link: '/categories' },
+  contact: { text: 'Contact', link: '/contact' },
+}
 
 // ✅ Menu order
 const menuOrder = ['home', 'browse', 'categories', 'contact']
 
-// ✅ Strongly typed navLinks
+// ✅ Strongly typed navLinks (fallback to defaultHeader)
 const navLinks = computed<HeaderItem[]>(() =>
     menuOrder
-        .map(key => props.header?.[key]) // may return undefined
-        .filter((item): item is HeaderItem => !!item) // type guard
+        .map(key => props.header?.[key] || defaultHeader[key]) // fallback
+        .filter((item): item is HeaderItem => !!item)
 )
 
 onMounted(() => {
-  logo.value = props.logo
-  primaryColor.value = props.primaryColor
+  logo.value = props.logo || '/default-logo.png'
+  primaryColor.value = props.primaryColor || '#d63384'
 
   const config = useRuntimeConfig()
   appName.value = config.public.appName || 'My App'
@@ -132,4 +140,5 @@ onMounted(() => {
 const route = useRoute()
 const isActive = (path: string) => route.path === path
 </script>
+
 
