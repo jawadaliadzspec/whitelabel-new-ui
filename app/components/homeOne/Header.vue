@@ -12,20 +12,21 @@
 
       <!-- Desktop Nav -->
       <ul class="hidden md:flex gap-7 items-center font-medium text-lg">
-        <li v-for="(item, i) in navLinks" :key="i">
-          <NuxtLink
-              :to="item.to"
-              class="transition pb-1"
-              :class="{ 'border-b-2': isActive(item.to) }"
-              :style="{
-              color: isActive(item.to) ? primaryColor : '',
-              borderColor: isActive(item.to) ? primaryColor : '',
-            }"
-          >
-            {{ item.label }}
-          </NuxtLink>
-        </li>
-      </ul>
+      <li v-for="(item,index) in navLinks" :key="index">
+        <NuxtLink
+            :to="item.link"
+            class="transition pb-1"
+            :class="{ 'border-b-2': isActive(item.link) }"
+            :style="{
+        color: isActive(item.link) ? primaryColor : '',
+        borderColor: isActive(item.link) ? primaryColor : '',
+      }"
+        >
+          {{ item.text }}
+        </NuxtLink>
+      </li>
+    </ul>
+
 
       <!-- Mobile Menu Button -->
       <button
@@ -57,7 +58,7 @@
       >
         <div class="flex justify-between items-center mb-4">
           <NuxtLink to="/" @click="closeMenu">
-            <span class="font-bold text-2xl" :style="{ color: primaryColor, fontFamily: 'Pacifico' }">Veckans R</span>
+            <span class="font-bold text-2xl" :style="{ color: primaryColor, fontFamily: 'Pacifico' }">{{ appName }}</span>
           </NuxtLink>
           <button @click="toggleMenu" class="text-3xl px-2 focus:outline-none" :style="{ color: primaryColor }">
             &times;
@@ -67,16 +68,16 @@
         <ul class="flex flex-col gap-4 text-lg font-medium">
           <li v-for="(item, i) in navLinks" :key="i">
             <NuxtLink
-                :to="item.to"
+                :to="item.link"
                 class="transition pb-1"
-                :class="{ 'border-b-2': isActive(item.to) }"
+                :class="{ 'border-b-2': isActive(item.link) }"
                 :style="{
-                color: isActive(item.to) ? primaryColor : '',
-                borderColor: isActive(item.to) ? primaryColor : '',
+                color: isActive(item.link) ? primaryColor : '',
+                borderColor: isActive(item.link) ? primaryColor : '',
               }"
                 @click="closeMenu"
             >
-              {{ item.label }}
+              {{ item.text }}
             </NuxtLink>
           </li>
         </ul>
@@ -86,75 +87,49 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { useRuntimeConfig } from '#imports';
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useRuntimeConfig } from '#imports'
 
-const mobileMenuOpen = ref(false);
-const toggleMenu = () => (mobileMenuOpen.value = !mobileMenuOpen.value);
-const closeMenu = () => (mobileMenuOpen.value = false);
+const mobileMenuOpen = ref(false)
+const toggleMenu = () => (mobileMenuOpen.value = !mobileMenuOpen.value)
+const closeMenu = () => (mobileMenuOpen.value = false)
 
-const logo = ref('');
-const appName = ref({});
-const primaryColor = ref('#d63384'); // fallback
+const logo = ref('')
+const appName = ref('')
+const primaryColor = ref('#d63384')
 
-const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/categories', label: 'Categories' },
-  { to: '/browse', label: 'Browse' },
-  { to: '/contact', label: 'Contact' },
-];
+// ✅ Props typing
+interface HeaderItem {
+  text: string
+  link: string
+}
 
-onMounted(async () => {
-  const settings:any = await $fetch("/api/settings");
+const props = defineProps<{
+  logo: string
+  primaryColor: string
+  header: Record<string, HeaderItem | undefined>
+}>()
 
-  logo.value = settings?.logo;
-  primaryColor.value = settings?.colors?.primaryColor || '#d63384';
+// ✅ Menu order
+const menuOrder = ['home', 'browse', 'categories', 'contact']
 
-  const config = useRuntimeConfig();
-  appName.value = config.public.appName;
-});
+// ✅ Strongly typed navLinks
+const navLinks = computed<HeaderItem[]>(() =>
+    menuOrder
+        .map(key => props.header?.[key]) // may return undefined
+        .filter((item): item is HeaderItem => !!item) // type guard
+)
 
-const route = useRoute();
-const isActive = (path: string) => route.path === path;
+onMounted(() => {
+  logo.value = props.logo
+  primaryColor.value = props.primaryColor
+
+  const config = useRuntimeConfig()
+  appName.value = config.public.appName || 'My App'
+})
+
+const route = useRoute()
+const isActive = (path: string) => route.path === path
 </script>
 
-<style scoped>
-a {
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-/* Hover color for all links */
-a:hover {
-  color: var( --primary-color);
-}
-
-/* Border hover if border-b-2 is applied */
-a.border-b-2:hover {
-  border-color: var( --primary-color);
-}
-
-/* Mobile menu close button hover */
-button:hover {
-  color: var( --primary-color);
-  border-color: var( --primary-color);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.slide-down-enter-from,
-.slide-down-leave-to {
-  transform: translateY(-32px);
-  opacity: 0;
-}
-</style>

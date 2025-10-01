@@ -1,10 +1,10 @@
 <template>
-  <footer class="relative bg-[#f5f3fc] pt-8 pb-4">
+  <footer class="relative bg-[#f5f3fc] pt-8 pb-4" logo="">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between gap-8 px-4 md:px-8">
       <!-- Logo + Tagline -->
       <div class="md:w-1/4 flex flex-col items-center md:items-start text-center md:text-left mb-8 md:mb-0">
         <span class="text-[#d63384] font-bold text-3xl mb-2" style="font-family: 'Pacifico', cursive;">
-          <img width="250px" :src="logo" :alt="appName" />
+          <img width="250px" :src="logo" alt="Logo here" />
         </span>
         <span class="text-gray-500 text-lg">All discounts in one place!</span>
       </div>
@@ -13,29 +13,29 @@
       <div class="flex-1 flex flex-col sm:flex-row justify-between gap-10">
         <!-- Användbara länkar -->
         <div>
-          <h4 class="font-bold text-lg mb-2">Useful Links</h4>
+          <h4 class="font-bold text-lg mb-2">{{footer.usefulLinks.mainHeading || 'Useful Links'}}</h4>
           <ul class="space-y-2 text-gray-700">
-            <li><NuxtLink to="/browse" class="hover:text-[#d63384] transition">Discounts</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Categories</NuxtLink></li>
-            <li><NuxtLink to="/contact" class="hover:text-[#d63384] transition">Contact</NuxtLink></li>
+            <li><NuxtLink to="/browse" class="hover:text-[#d63384] transition">{{footer.usefulLinks.discounts.text || 'Discounts'}}</NuxtLink></li>
+            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.usefulLinks.categories.text || 'Categories'}}</NuxtLink></li>
+            <li><NuxtLink to="/contact" class="hover:text-[#d63384] transition">{{footer.usefulLinks.contact.text || 'Contact'}}</NuxtLink></li>
 <!--            <li><NuxtLink to="/login" class="hover:text-[#d63384] transition">Logga in</NuxtLink></li>-->
           </ul>
         </div>
         <!-- Företagslänkar -->
         <div>
-          <h4 class="font-bold text-lg mb-2">Business links</h4>
+          <h4 class="font-bold text-lg mb-2">{{footer.businessLinks.mainHeading || 'Business links'}}</h4>
           <ul class="space-y-2 text-gray-700">
 <!--            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Blog</NuxtLink></li>-->
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Terms of Service</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Privacy Policy</NuxtLink></li>
-            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">Cookie Policy</NuxtLink></li>
+            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.termOfService.text || 'Terms of Service'}}</NuxtLink></li>
+            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.privacyPolicy.text || 'Privacy Policy'}}</NuxtLink></li>
+            <li><NuxtLink to="/" class="hover:text-[#d63384] transition">{{footer.businessLinks.cookiePolicy.text || 'Cookie Policy'}}</NuxtLink></li>
           </ul>
         </div>
         <!-- Nyhetsbrev -->
         <div class="sm:max-w-xs w-full">
-          <h4 class="font-bold text-lg mb-2">Newsletter</h4>
+          <h4 class="font-bold text-lg mb-2">{{footer.newsLetter.mainHeading || 'Newsletter'}}</h4>
           <p class="text-gray-700 text-sm mb-4">
-            Stay up to date with the latest news, updates and offers by subscribing to our newsletter.
+            {{footer.newsLetter.subHeading || 'Stay up to date with the latest news, updates and offers by subscribing to our newsletter.'}}
           </p>
           <form class="flex">
             <input
@@ -79,7 +79,8 @@
 <script setup lang="ts">
 
 const props = defineProps<{
-  logo: ''
+  logo: '',
+  footer: object
 }>()
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" })
