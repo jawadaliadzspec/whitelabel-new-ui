@@ -1,8 +1,8 @@
 <template>
   <!-- Hero Section -->
   <HeroSection
-      title="Browse"
-      breadcrumb="Home / Browse"
+      title="Bläddra"
+      breadcrumb="Hem / Bläddra"
   />
 
   <!-- Main Content -->
@@ -21,7 +21,7 @@
 <!--        </form>-->
         <!-- Kategorier Box -->
         <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-          <h2 class="text-xl font-bold text-gray-900 mb-2 pb-2 border-b border-[#d63384]">Filter By Categories</h2>
+          <h2 class="text-xl font-bold text-gray-900 mb-2 pb-2 border-b border-[#d63384]">Filtrera på kategorier</h2>
           <div class="flex flex-col gap-3 pt-3 pb-2">
             <label
                 v-for="cat in categories"
@@ -44,7 +44,7 @@
 <!--          >Visa Mer</button>-->
         </div>
         <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-          <h2 class="text-xl font-bold text-gray-900 mb-2 pb-2 border-b border-[#d63384]">Filter By Stores</h2>
+          <h2 class="text-xl font-bold text-gray-900 mb-2 pb-2 border-b border-[#d63384]">Filtrera på butiker</h2>
           <div class="flex flex-col gap-3 pt-3 pb-2">
             <label
                 v-for="store in stores"
@@ -105,7 +105,7 @@
                 :to="`/offers/${offer.path}`"
                 class="bg-[#d63384] px-5 py-2 mt-6 text-white rounded-lg font-semibold hover:text-[#d63384] hover:bg-white hover:outline hover:outline-1 hover:outline-[#d63384] transition duration-700"
             >
-              Discover More
+              Mer  info
             </NuxtLink>
           </div>
         </div>

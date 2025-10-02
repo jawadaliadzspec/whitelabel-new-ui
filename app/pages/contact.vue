@@ -1,19 +1,19 @@
 <template>
   <!-- Hero Section -->
   <HeroSection
-      title="Contact Us"
-      breadcrumb="Home / Contact Us"
+      title="Kontakta oss"
+      breadcrumb="Hem / Kontakta oss"
   />
 
   <!-- Contact Content Section -->
   <section class="py-10 bg-white max-w-7xl mx-auto">
-    <h2 class="text-2xl sm:text-3xl font-bold ml-6 sm:ml-16 mb-8">Get In Touch With Us</h2>
+    <h2 class="text-2xl sm:text-3xl font-bold ml-6 sm:ml-16 mb-8">Kontakta oss</h2>
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 px-3 sm:px-8 lg:px-16 max-w-7xl mx-auto">
       <!-- Contact Info Boxes -->
       <div class="w-full lg:w-1/2 space-y-6">
         <!-- Ring oss Box -->
         <div class="p-6 rounded-lg border border-gray-300 bg-purple-50 shadow-sm">
-          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">Call Us</h3>
+          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">Ring oss</h3>
           <div class="flex items-center text-pink-700 gap-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -27,7 +27,7 @@
         </div>
         <!-- E-post Box -->
         <div class="p-6 rounded-lg border border-gray-300 bg-purple-50 shadow-sm">
-          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">E-mail US</h3>
+          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">E-post</h3>
           <div class="flex items-center text-pink-700 gap-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -41,7 +41,7 @@
         </div>
         <!-- Kontor Box -->
         <div class="p-6 rounded-lg border border-gray-300 bg-purple-50 shadow-sm">
-          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">Visit Us</h3>
+          <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-3">Besök oss</h3>
           <div class="flex items-center text-pink-700 gap-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round"

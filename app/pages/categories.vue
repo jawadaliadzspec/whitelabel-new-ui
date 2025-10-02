@@ -1,12 +1,12 @@
 <template>
   <!-- Hero Section -->
   <HeroSection
-      title="Categories"
-      breadcrumb="Home / Categories"
+      title="Kategorier"
+      breadcrumb="Hem / Kategorier"
   />
   <section class="bg-blue-100 pt-16 pb-22">
     <h1 class="font-semibold text-3xl text-gray-900 p-4 md:ml-12">
-      All Categories
+      Alla Categories
     </h1>
 
     <div class="flex flex-wrap justify-center gap-6 px-2 sm:px-6">
@@ -26,7 +26,7 @@
             {{ cat.name }}
           </p>
           <p class="text-md text-[#d63384] pt-2">
-            {{ cat._count?.offers || 0 }} Discounts
+            {{ cat._count?.offers || 0 }} Rabatter
           </p>
         </NuxtLink>
       </div>
