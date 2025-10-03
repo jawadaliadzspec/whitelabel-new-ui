@@ -2,7 +2,7 @@
   <section class="relative bg-white py-20 px-6 sm:px-12 overflow-hidden">
     <div class="max-w-4xl mx-auto relative z-10">
       <h2 class="text-4xl font-bold text-gray-800 mb-12 text-center">
-        {{ data.title }}{{ data.title ?? 'Frequently Asked Questions' }}
+        {{ data.title ?? 'Frequently Asked Questions' }}
       </h2>
 
       <div v-if="(data.items?.length || 0) > 0" class="grid gap-6 sm:grid-cols-2">

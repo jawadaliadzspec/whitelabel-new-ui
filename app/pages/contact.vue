@@ -62,28 +62,28 @@
           <div>
             <input
                 type="text"
-                placeholder="Name"
+                placeholder="Namn"
                 class="mt-1 block w-full border text-lg border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
           <div>
             <input
                 type="email"
-                placeholder="E-mail"
+                placeholder="E-post"
                 class="mt-1 block w-full border text-lg border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
           <div>
             <input
                 type="text"
-                placeholder="Subject"
+                placeholder="Ämne"
                 class="mt-1 block w-full border text-lg border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
           <div>
             <textarea
                 rows="4"
-                placeholder="Message"
+                placeholder="Meddelande"
                 class="mt-1 block w-full text-lg border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-600"
             ></textarea>
           </div>

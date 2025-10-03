@@ -39,7 +39,7 @@
             <input
                 type="email"
                 class="rounded-l-lg border border-[#d63384] px-4 py-2 focus:outline-none focus:ring-1 focus:ring-[#d63384] w-full"
-                placeholder="Enter your email here"
+                placeholder="Ange din email här.."
             />
             <button
                 type="submit"

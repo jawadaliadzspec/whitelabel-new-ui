@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
             orderBy: {
                 id: 'desc',
             },
-            take: 4,
+            take: 8,
             include: {
                 stores: true,
             }
