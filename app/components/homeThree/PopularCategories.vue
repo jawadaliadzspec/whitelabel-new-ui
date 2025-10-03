@@ -76,7 +76,7 @@ defineProps<{
 
 onMounted(async () => {
   try {
-    offers.value = await $fetch('/api/offers/exclusive')
+    offers.value = await $fetch('/api/offers/popular')
   } catch (error) {
     offers.value = []
   }
